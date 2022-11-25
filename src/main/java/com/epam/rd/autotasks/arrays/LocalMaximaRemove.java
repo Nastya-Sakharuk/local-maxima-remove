@@ -11,9 +11,45 @@ public class LocalMaximaRemove {
     }
 
     public static int[] removeLocalMaxima(int[] array){
-
-        //put your code here
-
-        throw new UnsupportedOperationException();
+        int localMaxNumber = 0; //количество локальных максимумов
+        for (int i=0; i < array.length; i++) {
+            if (i == 0) {
+                if (array[i] > array[i+1]) {
+                    localMaxNumber++;
+                }
+            } else if (i == array.length-1) {
+                if (array[i] > array[i-1]) {
+                    localMaxNumber++;
+                }
+            } else {
+                if (array[i] > array[i-1] && array[i] > array[i+1]) {
+                    localMaxNumber++;
+                }
+            }
+        }
+        int[] array2 = new int[array.length - localMaxNumber];
+        if (localMaxNumber != 0) {
+            int notLocalMaxNumberArrayIndex = 0; //индекс нелокального максимума в массиве array2
+            for (int i = 0; i < array.length; i++) {
+                if (i == 0) {
+                    if (array[i] < array[i + 1]) {
+                        System.arraycopy(array, i, array2, i, 1);
+                        notLocalMaxNumberArrayIndex++;
+                    }
+                } else if (i == array.length-1) {
+                    if (array[i] < array[i - 1]) {
+                        System.arraycopy(array, i, array2, array2.length - 1, 1 );
+                    }
+                } else {
+                    if (array[i] <= array[i-1] || array[i] <= array[i+1]) {
+                        System.arraycopy(array, i, array2, notLocalMaxNumberArrayIndex, 1);
+                        notLocalMaxNumberArrayIndex++;
+                    }
+                }
+            }
+        } else {
+            return array;
+        }
+        return array2;
     }
 }
